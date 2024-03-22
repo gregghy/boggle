@@ -1,7 +1,7 @@
 typedef struct board {
   int rows;
   int cols;
-  int car[4][4];
+  char car[4][4];
   int seen[4][4];
 } board_t;
 
