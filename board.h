@@ -2,7 +2,7 @@ typedef struct board {
   int rows;
   int cols;
   char car[4][4];
-  int seen[4][4];
+  bool seen[4][4];
 } board_t;
 
 void printBoard(board_t board);
