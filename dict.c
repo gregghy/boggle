@@ -1,83 +1,53 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
 #include "dict.h"
 
-void afficher (vectd_t v){
+dict_t createDict() {
+  dict_t dict;
+  int wordNB;
+  // words.txt file is a dictionary to choose words from
+  FILE* file;
+  file = fopen("words.txt", "r");
+  if (!file){
+      printf("file not found!\n");
+      exit(EXIT_FAILURE);
+  }
+  //count number of words
+
+  // copy words from file to dict
+  //TODO make this into hash-table to speed up the process (for example filter by first letter)
+  char * line;
+  size_t len = 32;
+  ssize_t read;
   int i;
 
-  printf("%d ",v.nb);
-  for (i = 0; i < v.nb; i++){ 
-    printf("%lf ",v.v[i]);
-    printf("\n");
+  for (i = 0; i < MAXWORDS; i++) {
+    dict.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
   }
+  i = 0;
+  while ((read = getline(&line, &len, file)) != -1) {
+    if (read <= MAXWORDLENGTH) { 
+      strcpy(dict.words[i], line);
+      i++;
+    }
+  }
+  dict.nb = i;
+
+  fclose(file);
+
+  return dict;
 }
 
-void ecrire (vectd_t v, char * nomfichier) {
+
+void printDict (dict_t dict){
   int i;
-  FILE * fd;
 
-  fd = fopen (nomfichier, "w");
-  if (! fd) { /* good old ways */
-	printf("Impossible d ouvrir le fichier %s !\n\n", nomfichier);
-	exit (1);
+  for (i = 0; i < dict.nb; i++){ 
+    printf("%d: %s \n", i, dict.words[i]);
   }
-  fprintf(fd,"%d ",v.nb);
-  for (i = 0; i < v.nb; i++)
-	fprintf(fd,"%lf ",v.v[i]);
-  fclose(fd);
-}
-
-vectd_t creer (int nb) {
-  vectd_t v;
-  int i;
-  double x, eps;
-  
-  v.nb = nb;
-  v.v = (double *) malloc (nb * sizeof(double));
-  assert(v.v);
-  eps = - 0.07;
-  for (i = 0, x=1.3; i < v.nb; i++) {
-	v.v[i] = x;
-	x += eps;
-	if (x < 1.0) 
-	  eps = 0.145 + eps;
-	if (x > 1.7) 
-	  eps = - 0.145 + eps;
-  }
-  return v;
-}
-
-vectd_t lire (char * nomfichier) {
-  vectd_t v;
-  int i, nb;
-  FILE * fd;
-  double x;
-  
-  fd = fopen (nomfichier, "r");
-  if (! fd) {
-	printf("Impossible d ouvrir le fichier %s !\n\n", nomfichier);
-	exit (1);
-  }
-  fscanf(fd,"%d ",&nb);
-  v.nb = nb;
-  v.v = (double *) malloc (nb * sizeof(double));
-  if (! v.v) {
-	printf("Impossible d allouer la memoire de taille %d !\n\n", nb);
-	exit (1);
-  }
-  for (i = 0; i < v.nb; i++) {
-	fscanf(fd,"%lf ",&x);
-	v.v[i] = x;
-  }
-  fclose(fd);
-  return v;
 }
 
 int main() {
-  vectd_t cont; 
-  char * nf = "words.txt";
-  cont = lire(nf);
-  afficher(cont);
+  dict_t dict;
+  dict = createDict();
+  printDict(dict);
 
 }
