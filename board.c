@@ -7,17 +7,28 @@
 void printBoard (board_t b) {
   int i, j;
 
-  for (i = 0; i<b.rows; i++) {
-    for (j = 0; j<b.cols; j++) {
-      printf("rows %d, col %d, val %c, seen %d | \n", i, j, b.car[i][j], b.seen[i][j]);
-      printf("- \n");
-    }
+  for (j = 0; j<b.cols; j++) {
+    printf(" %c |", b.car[0][j]);
   }
+  printf("\n");
+  for (j = 0; j<b.cols; j++) {
+    printf(" %c |", b.car[1][j]);
+  }
+  printf("\n");
+  for (j = 0; j<b.cols; j++) {
+    printf(" %c |", b.car[2][j]);
+  }
+  printf("\n");
+  for (j = 0; j<b.cols; j++) {
+    printf(" %c |", b.car[3][j]);
+  }
+  printf("\n");
+
 }
 
-//give back a random letter 
+//generate a random letter 
 char randLetter() {
-  char * az = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  char * az = "abcdefghijklmnopqrstuvwxyz";
   int r = rand();
   r = r % 27;
   
