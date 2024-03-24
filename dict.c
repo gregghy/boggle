@@ -21,12 +21,15 @@ dict_t createDict() {
 
   for (i = 0; i < MAXWORDS; i++) {
     dict.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
+    assert(dict.words[i]);
   }
   i = 0;
   while ((read = getline(&line, &len, file)) != -1) {
-    if (read <= MAXWORDLENGTH) { 
-      strcpy(dict.words[i], line);
-      i++;
+    if (read <= MAXWORDLENGTH) {
+      if (read >= MINWORDLENGTH) {
+        strcpy(dict.words[i], line);
+        i++;
+      }
     }
   }
   dict.nb = i;
@@ -41,13 +44,13 @@ void printDict (dict_t dict){
   int i;
 
   for (i = 0; i < dict.nb; i++){ 
-    printf("%d: %s \n", i, dict.words[i]);
+    printf("%d: %s", i, dict.words[i]);
   }
 }
 
 int main() {
   dict_t dict;
   dict = createDict();
-  printDict(dict);
+  //printDict(dict);
 
 }
