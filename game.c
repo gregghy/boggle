@@ -29,6 +29,8 @@ int valid(char * word, dict_t* dict) {
 void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) {
   printf("n: %d \n", n);
   n++;
+  printBoard(board);
+  printf("word: %s\n", word);
   int x, len;
 
   //set visited value
@@ -48,15 +50,14 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
     printf("%s\n", word);
   }
 
-
   //recursive call
   int row, col;
   //traverse cells
-  for (row = r - 1; row <= r + 1 && row < board.rows; row++){
+  for (row = r - 1 ; row <= r + 1 && row < board.rows; row++){
     printf("row: %d\n", row);
-    for (int col = c - 1; col <= c + 1 && col < board.cols; col++){
+    for (col = c - 1; col <= c + 1 && col < board.cols; col++){
       printf("col: %d\n", col);
-      if (row >= 0 && col >= 0 && board.seen[row][col] != 0){
+      if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
         printf("%c\n", board.car[row][col]);
         findWordsRec(n, row, col, board, dict, word);
       }
@@ -84,12 +85,7 @@ void findWords(board_t board, dict_t dict) {
 int main() {
   dict_t dict;
   dict = createDict();
-  //printDict(dict);
   board_t board;
   board = generateBoard(4, 4);
-  char word[32] = "tehsx";
-  //printf("%d \n", valid(word, dict));
   findWords(board, dict);
-  //findWordsRec(0, 0, board, dict);
-  //printBoard(board);
 }
