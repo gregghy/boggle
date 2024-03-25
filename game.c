@@ -18,8 +18,8 @@ int valid(char * word, dict_t* dict) {
   bottom = 0;
   top = dict->nb;
   
-  char * alf = "abcdefghijklmnopqrstuvwxyz";
-  while (n < 100) {
+  //2*10 = 1024 -> reduce the number of elements of 3 orders of magnitude
+  while (n < 9) {
     if (strcmp(word, dict->words[i]) == 0) {
       return 1;
     }
@@ -44,12 +44,12 @@ int valid(char * word, dict_t* dict) {
 
 
 void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) {
-  printf("n: %d \n", n);
-  n++;
-  printBoard(board);
-  printf("word: %s\n", word);
-  int x, len;
+  //printf("n: %d \n", n);
 
+  //printBoard(board);
+  //printf("word: %s\n", word);
+  int x, len, not_in;
+  not_in = 1;
   //set visited value
   board.seen[r][c] = 1;
 
@@ -62,20 +62,36 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
   //printf("i: %d, j: %d\n", r, c);
   //printf("seen: %d, char: %c\n", board.seen[r][c], car);
   
-  //check if word is in dict TODO make more efficient
+  //check if word is in dict and if is it a repetition
   if (valid(word, dict)) {
-    printf("%s\n", word);
+    if (dict->repetitions > 0) {
+      for (x = 0; x < POSSREPETITIONS; x++) {
+        if (strcmp(word, dict->rep[x]) == 0) {
+          not_in = 0;
+        }
+      }
+      if (not_in) {
+        printf("%s\n", word);
+        strcpy(dict->rep[dict->repetitions], word);
+      }
+    }
+    else if (dict->repetitions == 0) {
+      printf("%s\n", word);
+      strcpy(dict->rep[dict->repetitions], word);
+    }
+    dict->repetitions++;
+
   }
 
   //recursive call
   int row, col;
   //traverse cells
   for (row = r - 1 ; row <= r + 1 && row < board.rows; row++){
-    printf("row: %d\n", row);
+    //printf("row: %d\n", row);
     for (col = c - 1; col <= c + 1 && col < board.cols; col++){
-      printf("col: %d\n", col);
+      //printf("col: %d\n", col);
       if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-        printf("%c\n", board.car[row][col]);
+        //printf("%c\n", board.car[row][col]);
         findWordsRec(n, row, col, board, dict, word);
       }
     }
@@ -87,7 +103,7 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
 }
 
 void findWords(board_t board, dict_t dict) {
-  int r, c, x, len;
+  int r, c, i, len;
   char word[32] = "";
   char car;
   //dict_t dict;
@@ -103,6 +119,6 @@ int main() {
   dict_t dict;
   dict = createDict();
   board_t board;
-  board = generateBoard(4, 4);
+  board = generateBoard(3, 3);
   findWords(board, dict);
 }

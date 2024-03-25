@@ -5,13 +5,30 @@
 
 #define MAXWORDLENGTH 16
 #define MINWORDLENGTH 3
-#define MAXWORDS 370105
+//#define MAXWORDS 370105
+#define MAXWORDS 1000
+#define POSSREPETITIONS 30
 
 typedef struct dict {
   int nb;
+  int repetitions;
+  char * rep[POSSREPETITIONS];
   char * words[MAXWORDS];
 } dict_t;
 
+/*
+dict_t createRep() {
+  dict_t repetitions;
+  int i;
+  for (i = 0; i<MAXWORDS; i++) {
+    repetitions.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
+    assert(repetitions.words[i]);
+  }
+  repetitions.nb = 0;
+
+  return repetitions;
+}
+*/
 dict_t createDict() {
   dict_t dict;
   
@@ -33,6 +50,11 @@ dict_t createDict() {
     dict.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
     assert(dict.words[i]);
   }
+  for (i = 0; i < POSSREPETITIONS; i++) {
+    dict.rep[i] = malloc(sizeof(char[MAXWORDLENGTH]));
+    assert(dict.rep[i]);
+  }
+  
 
   i = 0;
   while ((read = getline(&line, &len, file)) != -1) {
@@ -43,6 +65,7 @@ dict_t createDict() {
     }
   }
   dict.nb = i;
+  dict.repetitions = 0;
 
   fclose(file);
 
