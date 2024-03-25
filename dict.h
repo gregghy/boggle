@@ -17,7 +17,7 @@ dict_t createDict() {
   
   // words.txt file is a dictionary to choose words from
   FILE* file;
-  file = fopen("words.txt", "r");
+  file = fopen("words1000.txt", "r");
   if (!file){
       printf("file not found!\n");
       exit(EXIT_FAILURE);

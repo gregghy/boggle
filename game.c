@@ -12,12 +12,29 @@ typedef struct result {
 } result_t;
 
 int valid(char * word, dict_t* dict) {
-  //dict_t dict;
-  int i, len;
-  //dict = createDict();
-  len = strlen(word);
+  int i, n, bottom, top;
+  n = 0;
+  i = (dict->nb)/2;
+  bottom = 0;
+  top = dict->nb;
+  
   char * alf = "abcdefghijklmnopqrstuvwxyz";
-  for (i=0; i<dict->nb; i++) {
+  while (n < 100) {
+    if (strcmp(word, dict->words[i]) == 0) {
+      return 1;
+    }
+    else if (strcmp(word, dict->words[i]) < 0) {
+      top = i;
+      i = i/2;
+    }
+    else if (strcmp(word, dict-> words[i]) > 0) {
+      bottom = i;
+      i = i/2;
+    }
+    n++;
+  }
+
+  for (i=bottom; i<top; i++) {
     if (strcmp(dict->words[i], word) == 0) {
       return 1;
     }
@@ -86,6 +103,6 @@ int main() {
   dict_t dict;
   dict = createDict();
   board_t board;
-  board = generateBoard(4, 4);
+  board = generateBoard(3, 3);
   findWords(board, dict);
 }
