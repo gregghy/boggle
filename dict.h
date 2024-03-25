@@ -15,27 +15,34 @@ typedef struct dict {
   char * words[MAXWORDS];
 } dict_t;
 
-/*
-dict_t createRep() {
-  dict_t repetitions;
-  int i;
-  for (i = 0; i<MAXWORDS; i++) {
-    repetitions.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
-    assert(repetitions.words[i]);
-  }
-  repetitions.nb = 0;
-
-  return repetitions;
+int defineLang() {
+  int result;
+  printf("Type 0 for the ENG wordlist, type 1 for the FR wordlist: ");
+  scanf("%d", &result);
+  return result;
 }
-*/
+
 dict_t createDict() {
   dict_t dict;
   
   // words.txt file is a dictionary to choose words from
   FILE* file;
-  file = fopen("words3000.txt", "r");
+  int lang;
+  lang = defineLang();
+  if (lang == 0) {
+    file = fopen("words3000.txt", "r");
+  }
+  else if (lang == 1) {
+    file = fopen("words3000fr.txt", "r");
+  }
+  else {
+    printf("Lang error\n");
+    defineLang();
+    createDict();
+  }
+
   if (!file){
-      printf("file not found!\n");
+      printf("FATAL ERROR: wordlist not found!\n");
       exit(EXIT_FAILURE);
   }
   
@@ -81,13 +88,16 @@ void printDict (dict_t dict){
 }
 
 //tmp main function for debugging
+
 /*
 int main() {
-  dict_t dict;
-  dict = createDict();
-  printDict(dict);
+  //dict_t dict;
+  //dict = createDict();
+  //printDict(dict);
+  defineLang();
 }
 */
+
 
 
 
