@@ -4,9 +4,8 @@
 #include <assert.h>
 
 #define MAXWORDLENGTH 16
-#define MINWORDLENGTH 3
 //#define MAXWORDS 370105
-#define MAXWORDS 1000
+#define MAXWORDS 3000
 #define POSSREPETITIONS 30
 
 typedef struct dict {
@@ -34,7 +33,7 @@ dict_t createDict() {
   
   // words.txt file is a dictionary to choose words from
   FILE* file;
-  file = fopen("words1000.txt", "r");
+  file = fopen("words3000.txt", "r");
   if (!file){
       printf("file not found!\n");
       exit(EXIT_FAILURE);
@@ -58,7 +57,7 @@ dict_t createDict() {
 
   i = 0;
   while ((read = getline(&line, &len, file)) != -1) {
-    if (MINWORDLENGTH <= read <= MAXWORDLENGTH) {
+    if (read <= MAXWORDLENGTH) {
       strcpy(dict.words[i], line);
       dict.words[i][strlen(dict.words[i])-1] = '\0';
       i++;

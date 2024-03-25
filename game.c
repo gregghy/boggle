@@ -19,7 +19,7 @@ int valid(char * word, dict_t* dict) {
   top = dict->nb;
   
   //2*10 = 1024 -> reduce the number of elements of 3 orders of magnitude
-  while (n < 9) {
+  while (n < 10) {
     if (strcmp(word, dict->words[i]) == 0) {
       return 1;
     }
@@ -106,8 +106,7 @@ void findWords(board_t board, dict_t dict) {
   int r, c, i, len;
   char word[32] = "";
   char car;
-  //dict_t dict;
-  //dict = createDict();
+  printBoard(board);
   for (r = 0; r<board.rows; r++) {
     for (c = 0; c<board.cols; c++) {
       findWordsRec(0, r, c, board, &dict, word);
@@ -119,6 +118,6 @@ int main() {
   dict_t dict;
   dict = createDict();
   board_t board;
-  board = generateBoard(3, 3);
+  board = generateBoard(ROWS, COLS);
   findWords(board, dict);
 }

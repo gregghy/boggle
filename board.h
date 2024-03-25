@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#define ROWS 4
+#define COLS 4
+
 typedef struct board {
   int rows;
   int cols;
-  char car[4][4];
-  int seen[4][4];
+  char car[ROWS][COLS];
+  int seen[ROWS][COLS];
 } board_t;
 
 //print the board values in the terminal
