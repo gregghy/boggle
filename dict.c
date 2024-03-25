@@ -1,4 +1,16 @@
-#include "dict.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+#define MAXWORDLENGTH 16
+#define MINWORDLENGTH 3
+#define MAXWORDS 370105
+
+typedef struct dict {
+  int nb;
+  char * words[MAXWORDS];
+} *dict_t;
 
 dict_t createDict() {
   dict_t dict;
@@ -10,29 +22,28 @@ dict_t createDict() {
       printf("file not found!\n");
       exit(EXIT_FAILURE);
   }
-  //count number of words
-
+  
   // copy words from file to dict
-  //TODO make this into hash-table to speed up the process (for example filter by first letter)
   char * line;
   size_t len = 32;
   ssize_t read;
   int i;
 
   for (i = 0; i < MAXWORDS; i++) {
-    dict.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
-    assert(dict.words[i]);
+    dict->words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
+    assert(dict->words[i]);
   }
   i = 0;
   while ((read = getline(&line, &len, file)) != -1) {
     if (read <= MAXWORDLENGTH) {
       if (read >= MINWORDLENGTH) {
-        strcpy(dict.words[i], line);
+        strcpy(dict->words[i], line);
+        dict->words[i][strlen(dict->words[i])-1] = '\0';
         i++;
       }
     }
   }
-  dict.nb = i;
+  dict->nb = i;
 
   fclose(file);
 
@@ -43,14 +54,19 @@ dict_t createDict() {
 void printDict (dict_t dict){
   int i;
 
-  for (i = 0; i < dict.nb; i++){ 
-    printf("%d: %s", i, dict.words[i]);
+  for (i = 0; i < dict->nb; i++){ 
+    printf("%d: %s\n", i, dict->words[i]);
   }
 }
+
+//tmp main function for debugging
 
 int main() {
   dict_t dict;
   dict = createDict();
-  //printDict(dict);
-
+  printDict(dict);
 }
+
+
+
+
