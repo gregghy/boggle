@@ -103,6 +103,6 @@ int main() {
   dict_t dict;
   dict = createDict();
   board_t board;
-  board = generateBoard(3, 3);
+  board = generateBoard(4, 4);
   findWords(board, dict);
 }
