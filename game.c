@@ -11,6 +11,22 @@ typedef struct result {
   char * words[MAXWORDS];
 } result_t;
 
+void saveWords(dict_t* dict) {
+  int i;
+  //clear old file
+  remove("results.txt");
+  //open new file
+  FILE* file;
+  file = fopen("results.txt", "w");
+  
+  //copy words from dict to file
+  for (i = 0; i < dict->repetitions; i++) {
+    fprintf(file, "%s\n", dict->rep[i]);
+  }
+
+  printf("-> results.txt\n");
+}
+
 int valid(char * word, dict_t* dict) {
   int i, n, bottom, top;
   n = 0;
@@ -112,6 +128,7 @@ void findWords(board_t board, dict_t dict) {
       findWordsRec(0, r, c, board, &dict, word);
     }
   }
+  saveWords(&dict);
 }
 
 int main() {
