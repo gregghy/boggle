@@ -11,6 +11,17 @@ typedef struct result {
   char * words[MAXWORDS];
 } result_t;
 
+int points(dict_t* dict) {
+  int i, j, points, len;
+  points = 0;
+
+  for (i=0; i<dict->repetitions; i++) {
+    len = strlen(dict->rep[i]);
+    points = points + len;
+  }
+  printf("In %d words, the game scored %d points\n", dict->repetitions, points);
+}
+
 void saveWords(dict_t* dict) {
   int i;
   //clear old file
@@ -21,7 +32,7 @@ void saveWords(dict_t* dict) {
   
   //copy words from dict to file
   for (i = 0; i < dict->repetitions; i++) {
-    fprintf(file, "%s\n", dict->rep[i]);
+    fprintf(file, "word: %s, points: %d\n", dict->rep[i], strlen(dict->rep[i]));
   }
 
   //print the number of words in results
@@ -126,7 +137,7 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
 
 void findWords(board_t board, dict_t dict) {
   int r, c, i, len;
-  char word[32] = "";
+  char word[16] = "";
   char car;
   printBoard(board);
   for (r = 0; r<board.rows; r++) {
@@ -135,6 +146,7 @@ void findWords(board_t board, dict_t dict) {
     }
   }
   saveWords(&dict);
+  points(&dict);
 }
 
 int main() {
