@@ -11,28 +11,21 @@ typedef struct result {
   char * words[MAXWORDS];
 } result_t;
 
-int points(dict_t* dict) {
-  int i, j, points, len;
-  points = 0;
-
-  for (i=0; i<dict->repetitions; i++) {
-    len = strlen(dict->rep[i]);
-    points = points + len;
-  }
-  printf("In %d words, the game scored %d points\n", dict->repetitions, points);
-}
 
 void saveWords(dict_t* dict) {
-  int i;
+  int i, points, pp;
   //clear old file
   remove("results.txt");
   //open new file
   FILE* file;
   file = fopen("results.txt", "w");
 
+  points = 0;
   //copy words from dict to file
   for (i = 0; i < dict->repetitions; i++) {
-    fprintf(file, "word: %s, points: %d\n", dict->rep[i], strlen(dict->rep[i]));
+    pp = strlen(dict->rep[i]);
+    fprintf(file, "word: %s, points: %d\n", dict->rep[i], pp);
+    points = points + pp;
   }
 
   //print the number of words in results
@@ -41,6 +34,7 @@ void saveWords(dict_t* dict) {
   }
   else {
     printf("-> results.txt\n");
+    printf("%d words founded with %d points scored\n", dict->repetitions, points);
   }
 }
 
@@ -99,13 +93,13 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
         }
       }
       if (not_in) {
-        printf("%s\n", word);
+        printf("%s: %d points\n", word, strlen(word));
         strcpy(dict->rep[dict->repetitions], word);
         dict->repetitions++;
       }
     }
     else if (dict->repetitions == 0) {
-      printf("%s\n", word);
+      printf("%s: %d points\n", word, strlen(word));
       strcpy(dict->rep[dict->repetitions], word);
       dict->repetitions = 1;
     }
@@ -202,7 +196,6 @@ void findWords(board_t board, dict_t dict) {
     }
   }
   saveWords(&dict);
-  points(&dict);
 }
 
 int main() {
