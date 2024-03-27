@@ -108,77 +108,135 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
   //recursive call
   int row, col;
   //traverse cells, using the switch reduce the grid of one by one and improve search time of one order of magnitude
-  switch (r) {
-    case 0:
+  if (r == 0) {
       for (row = r; row <= r + 1 && row < board.rows; row++){
-        switch (c) {        
-          case 0:
+        if (c == 0) {        
             for (col = c; col <= c + 1 && col < board.cols; col++){
               if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
                 findWordsRec(n, row, col, board, dict, word);
               }
             }
-          case 1:
+        }
+        else if (c == 1) {
             for (col = c - 1; col <= c + 1 && col < board.cols; col++){
               if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
                 findWordsRec(n, row, col, board, dict, word);
               }
             }
-          case 2:
-            for (col = c - 1; col <= c && col < board.cols; col++){
-              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-                findWordsRec(n, row, col, board, dict, word);
-              }
-            }
-          }
-      }
-    case 1:
-      for (row = r - 1 ; row <= r + 1 && row < board.rows; row++) {
-        switch (c) {        
-          case 0:
-            for (col = c; col <= c + 1 && col < board.cols; col++){
-              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-                findWordsRec(n, row, col, board, dict, word);
-              }
-            }
-          case 1:
+        }
+        else if (c == 2) {
             for (col = c - 1; col <= c + 1 && col < board.cols; col++){
               if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
                 findWordsRec(n, row, col, board, dict, word);
               }
             }
-          case 2:
+        }
+        else {
             for (col = c - 1; col <= c && col < board.cols; col++){
               if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
                 findWordsRec(n, row, col, board, dict, word);
               }
             }
-          }
-      }
-    case 2:
-      for (row = r - 1 ; row <= r && row < board.rows; row++){
-        switch (c) {        
-          case 0:
-            for (col = c; col <= c + 1 && col < board.cols; col++){
-              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-                findWordsRec(n, row, col, board, dict, word);
-              }
-            }
-          case 1:
-            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
-              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-                findWordsRec(n, row, col, board, dict, word);
-              }
-            }
-          case 2:
-            for (col = c - 1; col <= c && col < board.cols; col++){
-              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-                findWordsRec(n, row, col, board, dict, word);
-              }
-            }
-          }
         }
       }
+  }
+  else if (r == 1) {
+      for (row = r - 1 ; row <= r + 1 && row < board.rows; row++) {
+        if (c == 0) {
+            for (col = c; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        if (c == 1) {
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        if (c == 2) {
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        else {
+            for (col = c - 1; col <= c && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+      }
+  }
+  else if (r == 2) {
+      for (row = r - 1 ; row <= r + 1 && row < board.rows; row++){
+        if (c == 0) {
+            for (col = c; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        if (c == 1) {
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        if (c == 2) {
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        else {
+            for (col = c - 1; col <= c && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+      }
+  }
+  else {
+    for (row = r - 1 ; row <= r && row < board.rows; row++){
+        if (c == 0) {
+            for (col = c; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        if (c == 1) {
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        if (c == 2) {
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+        else {
+            for (col = c - 1; col <= c && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+        }
+      }
+  }
+  
 
   //reset current cell
   word[len] = '\0';
@@ -187,7 +245,7 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
 
 void findWords(board_t board, dict_t dict) {
   int r, c, i, len;
-  char word[16] = "";
+  char word[MAXWORDLENGTH] = "";
   char car;
   printBoard(board);
   for (r = 0; r<board.rows; r++) {
@@ -199,11 +257,15 @@ void findWords(board_t board, dict_t dict) {
 }
 
 int main() {
+  clock_t begin = clock();
   dict_t dict;
   dict = createDict();
-  srand(time(NULL));
+  //srand(time(NULL));
   board_t board;
   board = generateBoard(ROWS, COLS);
-  printf("%d\n", strcmp("xénophobie", "xenophobie"));
+  //printf("%d\n", strcmp("xénophobie", "xenophobie"));
   findWords(board, dict);
+  clock_t end = clock();
+  double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  printf("time used: %f\n", time_spent);
 }
