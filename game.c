@@ -24,7 +24,13 @@ void saveWords(dict_t* dict) {
     fprintf(file, "%s\n", dict->rep[i]);
   }
 
-  printf("-> results.txt\n");
+  //print the number of words in results
+  if (dict->repetitions == 0) {
+    printf("No words found for this table\n");
+  }
+  else {
+    printf("-> results.txt\n");
+  }
 }
 
 int valid(char * word, dict_t* dict) {
@@ -89,14 +95,14 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
       if (not_in) {
         printf("%s\n", word);
         strcpy(dict->rep[dict->repetitions], word);
+        dict->repetitions++;
       }
     }
     else if (dict->repetitions == 0) {
       printf("%s\n", word);
       strcpy(dict->rep[dict->repetitions], word);
+      dict->repetitions = 1;
     }
-    dict->repetitions++;
-
   }
 
   //recursive call
@@ -134,6 +140,7 @@ void findWords(board_t board, dict_t dict) {
 int main() {
   dict_t dict;
   dict = createDict();
+  srand(time(NULL));
   board_t board;
   board = generateBoard(ROWS, COLS);
   findWords(board, dict);

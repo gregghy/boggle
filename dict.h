@@ -6,6 +6,7 @@
 #define MAXWORDLENGTH 16
 //#define MAXWORDS 370105
 #define MAXWORDS 3000
+//number of words possible in one table
 #define POSSREPETITIONS 30
 
 typedef struct dict {
@@ -25,43 +26,45 @@ int defineLang() {
 dict_t createDict() {
   dict_t dict;
   
-  // words.txt file is a dictionary to choose words from
+  //chose the file to choose words from
   FILE* file;
   int lang;
   lang = defineLang();
+
+  while (lang != 0 && lang != 1) {
+    printf("Error in language choice, please enter 0 or 1\n");
+    lang = defineLang();
+  }
   if (lang == 0) {
     file = fopen("words3000.txt", "r");
   }
-  else if (lang == 1) {
+  else {
     file = fopen("words3000fr.txt", "r");
   }
-  else {
-    printf("Lang error\n");
-    defineLang();
-    createDict();
-  }
-
+  
   if (!file){
       printf("FATAL ERROR: wordlist not found!\n");
       exit(EXIT_FAILURE);
   }
   
-  // copy words from file to dict
   char * line;
   size_t len = 0;
   ssize_t read;
   int i;
 
+  //memory allocation for the dictionary
   for (i = 0; i < MAXWORDS; i++) {
     dict.words[i] = malloc(sizeof(char[MAXWORDLENGTH]));
     assert(dict.words[i]);
   }
+
+  //memory allocation for the repetitions
   for (i = 0; i < POSSREPETITIONS; i++) {
     dict.rep[i] = malloc(sizeof(char[MAXWORDLENGTH]));
     assert(dict.rep[i]);
   }
   
-
+  //copy the words from file to dict
   i = 0;
   while ((read = getline(&line, &len, file)) != -1) {
     if (read <= MAXWORDLENGTH) {
@@ -70,6 +73,8 @@ dict_t createDict() {
       i++;
     }
   }
+
+  //set number of words and repetitions
   dict.nb = i;
   dict.repetitions = 0;
 

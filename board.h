@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 
 #define ROWS 4
 #define COLS 4
@@ -28,7 +29,7 @@ void printBoard (board_t b) {
 char randLetter() {
   char * az = "abcdefghijklmnopqrstuvwxyz";
   int r = rand();
-  r = r % 27;
+  r = r % 26;
   
   char letter = az[r];
 
