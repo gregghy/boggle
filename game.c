@@ -29,7 +29,7 @@ void saveWords(dict_t* dict) {
   //open new file
   FILE* file;
   file = fopen("results.txt", "w");
-  
+
   //copy words from dict to file
   for (i = 0; i < dict->repetitions; i++) {
     fprintf(file, "word: %s, points: %d\n", dict->rep[i], strlen(dict->rep[i]));
@@ -45,7 +45,7 @@ void saveWords(dict_t* dict) {
 }
 
 int valid(char * word, dict_t* dict) {
-  int i, n, bottom, top;
+  int i, n, bottom, top, cmp;
   n = 0;
   i = (dict->nb)/2;
   bottom = 0;
@@ -53,14 +53,15 @@ int valid(char * word, dict_t* dict) {
   
   //2*10 = 1024 -> reduce the number of elements of 3 orders of magnitude
   while (n < 10) {
-    if (strcmp(word, dict->words[i]) == 0) {
+    cmp = strcmp(word, dict->words[i]);
+    if (cmp == 0) {
       return 1;
     }
-    else if (strcmp(word, dict->words[i]) < 0) {
+    else if (cmp < 0) {
       top = i;
       i = i/2;
     }
-    else if (strcmp(word, dict-> words[i]) > 0) {
+    else if (cmp > 0) {
       bottom = i;
       i = i/2;
     }
@@ -77,10 +78,6 @@ int valid(char * word, dict_t* dict) {
 
 
 void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) {
-  //printf("n: %d \n", n);
-
-  //printBoard(board);
-  //printf("word: %s\n", word);
   int x, len, not_in;
   not_in = 1;
   //set visited value
@@ -92,8 +89,6 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
   
   len = strlen(word);
   word[len] = car;
-  //printf("i: %d, j: %d\n", r, c);
-  //printf("seen: %d, char: %c\n", board.seen[r][c], car);
   
   //check if word is in dict and if is it a repetition
   if (valid(word, dict)) {
@@ -118,17 +113,78 @@ void findWordsRec(int n, int r, int c, board_t board, dict_t* dict, char* word) 
 
   //recursive call
   int row, col;
-  //traverse cells
-  for (row = r - 1 ; row <= r + 1 && row < board.rows; row++){
-    //printf("row: %d\n", row);
-    for (col = c - 1; col <= c + 1 && col < board.cols; col++){
-      //printf("col: %d\n", col);
-      if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
-        //printf("%c\n", board.car[row][col]);
-        findWordsRec(n, row, col, board, dict, word);
+  //traverse cells, using the switch reduce the grid of one by one and improve search time of one order of magnitude
+  switch (r) {
+    case 0:
+      for (row = r; row <= r + 1 && row < board.rows; row++){
+        switch (c) {        
+          case 0:
+            for (col = c; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          case 1:
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          case 2:
+            for (col = c - 1; col <= c && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          }
       }
-    }
-  }
+    case 1:
+      for (row = r - 1 ; row <= r + 1 && row < board.rows; row++) {
+        switch (c) {        
+          case 0:
+            for (col = c; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          case 1:
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          case 2:
+            for (col = c - 1; col <= c && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          }
+      }
+    case 2:
+      for (row = r - 1 ; row <= r && row < board.rows; row++){
+        switch (c) {        
+          case 0:
+            for (col = c; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          case 1:
+            for (col = c - 1; col <= c + 1 && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          case 2:
+            for (col = c - 1; col <= c && col < board.cols; col++){
+              if (((row >= 0 && col > 0) || (row > 0 && col >= 0)) && board.seen[row][col] == 0){
+                findWordsRec(n, row, col, board, dict, word);
+              }
+            }
+          }
+        }
+      }
 
   //reset current cell
   word[len] = '\0';
@@ -155,5 +211,6 @@ int main() {
   srand(time(NULL));
   board_t board;
   board = generateBoard(ROWS, COLS);
+  printf("%d\n", strcmp("xénophobie", "xenophobie"));
   findWords(board, dict);
 }

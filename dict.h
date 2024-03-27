@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #define MAXWORDLENGTH 16
-//#define MAXWORDS 370105
 #define MAXWORDS 3000
 //number of words possible in one table
 #define POSSREPETITIONS 30

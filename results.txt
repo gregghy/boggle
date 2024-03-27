@@ -1,14 +1,8 @@
-my
-myth
-we
-wipe
-wide
-dig
-type
-kid
-if
-fight
-fifty
-fifth
-big
-gift
+word: me, points: 2
+word: meal, points: 4
+word: be, points: 2
+word: a, points: 1
+word: he, points: 2
+word: lab, points: 3
+word: lie, points: 3
+word: ie, points: 2
