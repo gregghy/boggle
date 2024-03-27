@@ -1,2 +1,3 @@
+word: bar, points: 3
 word: do, points: 2
-word: a, points: 1
+word: ah, points: 2
